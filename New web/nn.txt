@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazlan Fazil | Vistora Designs</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles and Typography (Design Notes) */
+        :root {
+            --primary-color: #3B82F6; /* Your Accent Color (e.g., a nice blue) */
+            --background-color: #FFFFFF;
+            --text-color: #333333;
+            --light-gray: #F4F4F4;
+            --dark-text: #1F2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth; /* Smooth Scroll Note */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 12px 25px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            text-align: center;
+        }
+
+        /* 1. Header/Hero Section */
+        header {
+            background: var(--background-color);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            text-decoration: none;
+        }
+
+        .nav-links a {
+            color: var(--dark-text);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Hero Styling */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(135deg, var(--light-gray) 0%, var(--background-color) 100%); /* Subtle Gradient */
+            animation: fadeIn 1s ease-out; /* Animation Note */
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .hero-cta .cta-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .hero-cta .cta-primary:hover {
+            background-color: #2563EB; /* Darker Blue */
+            transform: translateY(-2px);
+        }
+
+        .hero-cta .cta-secondary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+
+        .hero-cta .cta-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* General Section Styling */
+        section {
+            padding: 80px 0;
+            opacity: 0; /* Hidden for fade-in animation */
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        /* 2. About Section */
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .about-text {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .about-visual {
+            flex: 1;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--light-gray);
+            border-radius: 8px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item strong {
+            display: block;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .stat-item span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* 3. Services Section */
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .service-card {
+            background: var(--light-gray);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+
+        /* 4. Portfolio Section - UPDATED FOR GALLERY VIEW */
+        .portfolio-grid {
+          /* Change from 2 columns to a responsive, denser gallery */
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive 3-4 column look */
+          gap: 15px; /* Smaller gap for a tighter gallery feel */
+        }
+        
+        .project-card {
+            /* Need to set position relative for absolute positioning of details-on-hover */
+            position: relative;
+            overflow: hidden; /* Important for the hover effect on the image */
+            border-radius: 10px; /* Added for a cleaner gallery look */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .portfolio-grid img {
+          width: 100%;  /* fills each grid cell properly */
+          height: 250px; /* fixed height for uniform gallery items */
+          object-fit: cover; /* keeps proportion nicely */
+          display: block;
+          transition: transform 0.4s ease;
+        }
+
+
+        .project-card:hover img {
+            transform: scale(1.1); /* Slightly more pronounced zoom on hover */
+        }
+
+        .details-on-hover {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.75); /* Darker background for readability */
+            color: white;
+            padding: 15px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .project-card:hover .details-on-hover {
+            transform: translateY(0);
+        }
+
+        /* 5. Testimonials Section */
+        #testimonials {
+            background-color: var(--light-gray);
+        }
+
+        .testimonials-grid {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .testimonial-card {
+            background: white;
+            padding: 30px;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 8px;
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-card p {
+            font-style: italic;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-card strong {
+            display: block;
+            text-align: right;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* 6. Contact Section */
+        .contact-content {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .contact-info div {
+            margin-bottom: 20px;
+        }
+
+        .contact-info strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .contact-form {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-family: inherit;
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        .contact-form .cta-button {
+             padding: 15px 25px;
+        }
+        
+        /* 7. Footer */
+        footer {
+            background-color: var(--dark-text);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .quick-links a,
+        .social-media a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .quick-links a:hover,
+        .social-media a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-media {
+            margin-top: 15px;
+        }
+
+        .copyright {
+            width: 100%;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .nav-links {
+                display: none; /* Hide for mobile for simplicity, or implement a hamburger menu */
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            /* Adjust gallery view for smaller screens */
+            .portfolio-grid {
+                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Fazlan Fazil / Vistora Designs</a>
+                <div class="nav-links">
+                    <a href="#about">About</a>
+                    <a href="#services">Services</a>
+                    <a href="#portfolio">Work</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section id="hero" class="hero is-visible">
+        <div class="container hero-content">
+            <h1>Creative Graphic Designs | Branding | Web | Digital Art</h1>
+            <p class="subtitle">I craft digital experiences that are both functional and visually compelling.</p>
+            <div class="hero-cta">
+                <a href="#portfolio" class="cta-button cta-primary">View My Work</a>
+                <a href="#contact" class="cta-button cta-secondary">Contact Me</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="container">
+        <h2>Hi, I’m Fazlan Fazil</h2>
+        <div class="about-content">
+            <div class="about-visual">
+                <img src="avatar.jpg" alt="Fazlan Fazil Avatar" class="avatar">
+            </div>
+            <div class="about-text">
+                <p>I’m a 17-year-old creative designer from Sri Lanka, specializing in graphic design, branding, and web visuals. I craft digital experiences that are both functional and visually compelling. My passion lies in transforming concepts into clean, effective, and memorable visual solutions.</p>
+                <div class="stats">
+                    <div class="stat-item"><strong>85+</strong> <span>Projects Completed</span></div>
+                    <div class="stat-item"><strong>100%</strong> <span>Client Satisfaction</span></div>
+                    <div class="stat-item"><strong>1</strong> <span>Passionate Designer</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="container">
+        <h2>My Services</h2>
+        <div class="service-cards">
+            <div class="service-card">
+                <h3>Graphic Design</h3>
+                <p>Posters, Social Media Banners, Brand Identity, Print Collateral.</p>
+            </div>
+            <div class="service-card">
+                <h3>Brand Design</h3>
+                <p>Simple website layouts, UI/UX visuals, Landing Page Mockups.</p>
+            </div>
+            <div class="service-card">
+                <h3>Digital Art & Mockups</h3>
+                <p>Illustrations, product mockups, 3D visualization, concept art.</p>
+            </div>
+            <div class="service-card">
+                <h3>Image Editing & Retouching</h3>
+                <p>Professional Photoshop / Illustrator edits and photo enhancements.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="container">
+        <h2>My Work</h2>
+        <div class="portfolio-grid">
+          
+            <div class="project-card">
+                <img src="1.jpeg" alt="Project 2">
+                <div class="details-on-hover">1ocial Media Posts</div>
+            </div>
+             <div class="project-card">
+                <img src="2.jpg" alt="Project 2">
+                <div class="details-on-hover">Social Media Posts</div>
+            </div>
+            <div class="project-card">
+                <img src="3.jpg" alt="Project 2">
+                <div class="details-on-hover">Logo Poster</div>
+            </div>
+            <div class="project-card">
+                <img src="4.jpg" alt="Project 3">
+                <div class="details-on-hover">Minimalist Social Media Banner Series</div>
+            </div>
+             <div class="project-card">
+                <img src="5.jpg" alt="Project 4">
+                <div class="details-on-hover">Branding Mockup</div>
+            </div>
+            <div class="project-card">
+                <img src="6.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="7.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="8.png" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="9.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="10.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="11.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="12.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="13.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="14.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+            <div class="project-card">
+                <img src="15.jpg" alt="Project 5">
+                <div class="details-on-hover">Web Visuals</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials">
+        <div class="container">
+            <h2>Client Feedback</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>“Fazlan’s designs brought my brand to life! His understanding of color and composition is far beyond his years. Highly recommended.”</p>
+                    <strong>– Ali Ahamed</strong>
+                </div>
+                 <div class="testimonial-card">
+                    <p>“Professional, fast, and delivered stunning web mockups. The communication was excellent throughout the whole process.”</p>
+                    <strong>– Riyas</strong>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="container">
+        <h2>Get in Touch with Fazlan Fazil</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <p class="cta-text">Let’s create something amazing together.</p>
+                <div>
+                    <strong>Email</strong>
+                    <span>mfazlanfazil@gmail.com</span>
+                </div>
+                <div>
+                    <strong>Phone</strong>
+                    <span>+94 72 755 1313</span>
+                </div>
+                 <div>
+                    <strong>Location</strong>
+                    <span>Sri Lanka</span>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form action="#" method="POST">
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit" class="cta-button">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <div class="quick-links">
+                <a href="#">Home</a> |
+                <a href="#about">About</a> |
+                <a href="#services">Services</a> |
+                <a href="#portfolio">Portfolio</a> |
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="social-media">
+                <a href="https://www.instagram.com/vistora_designs/" target="_blank">Instagram</a> |
+                <a href="https://web.whatsapp.com/" target="_blank">Whatsapp</a>
+                
+            </div>
+            <div class="copyright">
+                © 2025 Fazlan Fazil | Vistora Designs
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Function to handle the Scroll Fade-In (Animations Note)
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                // Check if the element is in the viewport
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    // Stop observing once it's visible to run the animation only once
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            // Options for the observer: trigger when 10% of the element is visible
+            threshold: 0.1 
+        });
+
+        // Target all sections except the hero (which is visible by default)
+        document.querySelectorAll('section:not(#hero)').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vistora Designs | Creative Visuals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* === BASE & VARIABLES === */
+        :root {
+            --bg-color: #0a0a0c;
+            --text-main: #ffffff;
+            --text-muted: #a0a0b0;
+            --accent-1: #ff3366;
+            --accent-2: #8c52ff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Hide default cursor */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3 { font-family: 'Syne', sans-serif; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* === CUSTOM CURSOR === */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: var(--accent-1);
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 2px solid var(--accent-2);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            box-shadow: 0 0 15px rgba(140, 82, 255, 0.5);
+        }
+        .cursor-hover {
+            width: 60px; height: 60px;
+            background-color: rgba(255, 51, 102, 0.2);
+            border-color: var(--accent-1);
+            backdrop-filter: blur(2px);
+        }
+
+        /* === GLASSMORPHISM & UTILS === */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(140, 82, 255, 0.2);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+            color: white;
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover { transform: scale(1.05); }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-2);
+        }
+        .btn-outline:hover { background: var(--accent-2); }
+
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* === BACKGROUND ANIMATION === */
+        .bg-blobs {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1; overflow: hidden; filter: blur(80px);
+        }
+        .blob { position: absolute; border-radius: 50%; animation: float 15s infinite alternate; }
+        .blob-1 { width: 400px; height: 400px; background: rgba(255, 51, 102, 0.2); top: -10%; left: -10%; }
+        .blob-2 { width: 500px; height: 500px; background: rgba(140, 82, 255, 0.2); bottom: -20%; right: -10%; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(100px, 50px) scale(1.2); }
+        }
+
+        /* === HERO SECTION === */
+        header {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 0 2rem;
+        }
+        .hero-title { font-size: clamp(3rem, 8vw, 6rem); font-weight: 800; margin-bottom: 1rem;
+            background: linear-gradient(to right, #fff, var(--accent-2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease-out;
+        }
+        .hero-tagline { font-size: clamp(1.2rem, 2vw, 1.8rem); color: var(--text-muted); margin-bottom: 2.5rem; animation: fadeInUp 1s ease-out 0.3s both; }
+        .hero-btns { display: flex; gap: 1.5rem; animation: fadeInUp 1s ease-out 0.6s both; }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* === PORTFOLIO SECTION === */
+        section { padding: 6rem 2rem; max-width: 1400px; margin: 0 auto; }
+        .section-title { font-size: 3rem; text-align: center; margin-bottom: 3rem; }
+        
+        .filters { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn { background: transparent; color: var(--text-main); border: 1px solid var(--glass-border); padding: 0.5rem 1.5rem; border-radius: 30px; transition: all 0.3s ease; }
+        .filter-btn:hover, .filter-btn.active { background: var(--text-main); color: var(--bg-color); }
+
+        .masonry-grid { column-count: 3; column-gap: 1.5rem; }
+        .portfolio-item { break-inside: avoid; margin-bottom: 1.5rem; position: relative; border-radius: 16px; overflow: hidden; }
+        .portfolio-item img { width: 100%; height: auto; display: block; transition: transform 0.5s ease; }
+        .portfolio-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
+        .portfolio-item:hover img { transform: scale(1.08) rotate(1deg); }
+        .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+        /* === TESTIMONIALS === */
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
+        .star-rating { color: #ffd700; margin-bottom: 1rem; font-size: 1.2rem; }
+        .user-hidden { font-style: italic; color: var(--text-muted); margin-top: 1rem; font-size: 0.9rem; }
+
+        /* === CONTACT & HOURS === */
+        .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+        .contact-info { display: flex; flex-direction: column; gap: 2rem; }
+        .hours-card { display: flex; align-items: center; justify-content: space-between; font-size: 1.2rem; }
+        .hours-icon { font-size: 2rem; animation: pulse 2s infinite; }
+        
+        .social-btn { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: var(--glass-bg); border-radius: 16px; border: 1px solid var(--glass-border); transition: all 0.3s ease; }
+        .social-btn:hover { background: rgba(255,255,255,0.1); transform: translateX(10px); }
+
+        .contact-form { display: flex; flex-direction: column; gap: 1.5rem; }
+        .input-field { background: var(--glass-bg); border: 1px solid var(--glass-border); color: white; padding: 1rem 1.5rem; border-radius: 12px; font-family: inherit; transition: border 0.3s; }
+        .input-field:focus { outline: none; border-color: var(--accent-2); }
+        textarea.input-field { min-height: 150px; resize: vertical; }
+
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* === CREATIVE INTRO SECTION === */
+#creative-intro {
+    padding-top: 2rem;
+}
+
+.creative-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.creative-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(140,82,255,0.15), transparent 70%);
+    top: -200px;
+    right: -200px;
+    pointer-events: none;
+}
+
+.creative-left {
+    position: relative;
+    z-index: 2;
+}
+
+.mini-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1.2rem;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--glass-border);
+    margin-bottom: 2rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    backdrop-filter: blur(10px);
+}
+
+.creative-title {
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.05;
+    margin-bottom: 2rem;
+    font-weight: 800;
+}
+
+.creative-title span {
+    background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.creative-text {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.9;
+    max-width: 700px;
+}
+
+.creative-text.second {
+    margin-top: 1.3rem;
+}
+
+.creative-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
+.creative-tag {
+    padding: 0.9rem 1.3rem;
+    border-radius: 50px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.creative-tag:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-2);
+    box-shadow: 0 0 20px rgba(140,82,255,0.2);
+}
+
+.creative-right {
+    position: relative;
+    min-height: 420px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.floating-card {
+    position: absolute;
+    width: 220px;
+    padding: 1.8rem;
+    border-radius: 24px;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    animation: floatCard 4s ease-in-out infinite alternate;
+}
+
+.floating-card h3 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(45deg, var(--accent-1), var(--accent-2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.floating-card p {
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.floating-card.one {
+    top: 30px;
+    left: 10px;
+}
+
+.floating-card.two {
+    bottom: 40px;
+    right: 0;
+    animation-delay: 1s;
+}
+
+.floating-circle {
+    position: absolute;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.08);
+    animation: rotateCircle 16s linear infinite;
+}
+
+.floating-line {
+    position: absolute;
+    width: 2px;
+    height: 180px;
+    background: linear-gradient(to bottom, transparent, var(--accent-2), transparent);
+    right: 40%;
+    animation: pulseLine 3s ease-in-out infinite;
+}
+
+@keyframes floatCard {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(-15px);
+    }
+}
+
+@keyframes rotateCircle {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulseLine {
+    0% {
+        opacity: 0.3;
+        transform: scaleY(0.8);
+    }
+    50% {
+        opacity: 1;
+        transform: scaleY(1);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scaleY(0.8);
+    }
+}
+
+@media (max-width: 900px) {
+    .creative-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .creative-right {
+        min-height: 350px;
+    }
+
+    .floating-card {
+        width: 200px;
+    }
+}
+
+        /* === RESPONSIVE === */
+        @media (max-width: 900px) {
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .masonry-grid { column-count: 2; }
+        }
+        @media (max-width: 600px) {
+            .masonry-grid { column-count: 1; }
+            .hero-btns { flex-direction: column; width: 100%; max-width: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="cursor-dot" data-cursor-dot></div>
+    <div class="cursor-outline" data-cursor-outline></div>
+
+    <header id="home">
+        <h1 class="hero-title">Vistora Designs</h1><br>
+        <p class="hero-tagline">Creative Visuals That Speak Loud</p>
+        <div class="hero-btns">
+            <a href="#portfolio" class="btn hover-target">View Portfolio</a>
+            <a href="#contact" class="btn btn-outline hover-target">Contact Me</a>
+        </div>
+    </header>
+
+    <!-- === PASSION / INTRO SECTION === -->
+<section id="creative-intro" class="reveal">
+    <div class="creative-wrapper glass-card">
+        
+        <div class="creative-left">
+            <div class="mini-badge hover-target">
+                ✦ Passion Driven Designer
+            </div>
+
+            <h2 class="creative-title">
+                I Don't Just Design.<br>
+                <span>I Build Visual Experiences.</span>
+            </h2>
+
+            <p class="creative-text">
+                Every poster, logo, and visual I create is designed to make people stop scrolling and feel something. 
+                I love turning simple ideas into powerful visuals using creativity, motion, lighting, typography, and modern design trends.
+            </p>
+
+            <p class="creative-text second">
+                From late-night editing sessions to experimenting with new styles and effects, designing isn't just work for me — it's the thing I genuinely enjoy building every single day.
+            </p>
+
+            <div class="creative-tags">
+                <span class="creative-tag hover-target">Poster Design</span>
+                <span class="creative-tag hover-target">Brand Identity</span>
+                <span class="creative-tag hover-target">Social Media</span>
+                <span class="creative-tag hover-target">Creative Direction</span>
+                <span class="creative-tag hover-target">Motion Visuals</span>
+            </div>
+        </div>
+
+        <div class="creative-right">
+            <div class="floating-card one hover-target">
+                <h3>18+</h3>
+                <p>Creative Concepts Tested</p>
+            </div>
+
+            <div class="floating-card two hover-target">
+                <h3>∞</h3>
+                <p>Hours Spent Designing</p>
+            </div>
+
+            <div class="floating-circle"></div>
+            <div class="floating-line"></div>
+        </div>
+
+    </div>
+</section>
+
+    <section id="portfolio" class="reveal">
+        <h2 class="section-title">My Works</h2>
+        <div class="filters">
+            <button class="filter-btn active hover-target">All</button>
+            <button class="filter-btn hover-target">Logos</button>
+            <button class="filter-btn hover-target">Posters</button>
+            <button class="filter-btn hover-target">Web Design</button>
+        </div>
+        <div class="masonry-grid">
+            <div class="portfolio-item hover-target">
+                <img src="4.jpg" alt="Poster 4:5">
+                <div class="portfolio-overlay"><h3>Brand Identity</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="1.jpeg" alt="Logo 1:1">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+             <div class="portfolio-item hover-target">
+                <img src="506.jpg" alt="Logo 1:1">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="2.jpg" alt="Logo 1:1">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+             <div class="portfolio-item hover-target">
+                <img src="6.jpg" alt="Logo 1:1">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="10.jpg" alt="Reel Vertical">
+                <div class="portfolio-overlay"><h3>Social Media</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="15.jpg" alt="Reel Vertical">
+                <div class="portfolio-overlay"><h3>Social Media</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="12.jpg" alt="Web 16:9">
+                <div class="portfolio-overlay"><h3>Mockups</h3></div>
+            </div>
+             <div class="portfolio-item hover-target">
+                <img src="45.jpg" alt="Web 16:9">
+                <div class="portfolio-overlay"><h3>Logo Design</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="66.jpg" alt="Art">
+                <div class="portfolio-overlay"><h3>Brand Identity</h3></div>
+            </div>
+            <div class="portfolio-item hover-target">
+                <img src="33.jpg" alt="Square">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+             <div class="portfolio-item hover-target">
+                <img src="16.jpg" alt="Square">
+                <div class="portfolio-overlay"><h3>Text Effects</h3></div>
+            </div>
+             <div class="portfolio-item hover-target">
+                <img src="3.jpg" alt="Square">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+             <div class="portfolio-item hover-target">
+                <img src="9.jpg" alt="Square">
+                <div class="portfolio-overlay"><h3>Poster</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="testimonials" class="reveal">
+        <h2 class="section-title">Client Love</h2>
+        <div class="testimonials-grid">
+            <div class="glass-card hover-target">
+                <div class="star-rating">★★★★★</div>
+                <p>"Fazlan’s designs brought my brand to life! His understanding of color and composition is far beyond his years. Highly recommended."</p>
+                <div class="user-hidden">— Ali Khalid</div>
+            </div>
+            <div class="glass-card hover-target">
+                <div class="star-rating">★★★★★</div>
+                <p>"An absolute pleasure to work with. Quick turnaround, incredibly friendly, and an eye for modern design that you just don't see often."</p>
+                <div class="user-hidden">— Numair (E-commerce Client)</div>
+            </div>
+            <div class="glass-card hover-target">
+                <div class="star-rating">★★★★★</div>
+                <p>"The poster designs stopped people in their tracks. Creative, vibrant, and perfectly captured the vibe of our event."</p>
+                <div class="user-hidden">— School Event Organizer</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="reveal">
+        <h2 class="section-title">Let's Create Together</h2>
+        <div class="contact-wrapper">
+            
+            <div class="contact-info">
+                <div class="glass-card hours-card hover-target">
+                    <div>
+                        <h3 style="margin-bottom: 0.5rem; color: var(--accent-1);">Working Hours</h3>
+                        <p>Morning: <strong>5:30 AM</strong></p>
+                        <p>Night: <strong>2:30 AM</strong></p>
+                    </div>
+                    <div class="hours-icon">🌞 ➔ 🌜</div>
+                </div>
+
+                <a href="https://wa.me/94767871312" target="_blank" class="social-btn hover-target">
+                    <span style="font-size: 1.5rem;">💬</span>
+                    <div>
+                        <strong>WhatsApp</strong>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">076 787 1312</p>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/vistoradesigns" target="_blank" class="social-btn hover-target">
+                    <span style="font-size: 1.5rem;">📸</span>
+                    <div>
+                        <strong>Instagram</strong>
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">@vistora.designs</p>
+                    </div>
+                </a>
+            </div>
+
+            <form class="glass-card contact-form" onsubmit="event.preventDefault(); alert('Message animation playing! (Form simulated)');">
+                <input type="text" class="input-field hover-target" placeholder="Your Name" required>
+                <select class="input-field hover-target" required>
+                    <option value="" disabled selected>Service Type</option>
+                    <option value="logo">Logo Design</option>
+                    <option value="poster">Poster / Print</option>
+                    <option value="social">Social Media Visuals</option>
+                    <option value="web">Web Design</option>
+                </select>
+                <textarea class="input-field hover-target" placeholder="Tell me about your project..." required></textarea>
+                <button type="submit" class="btn hover-target">Send Message 🚀</button>
+            </form>
+
+        </div>
+    </section>
+
+    <script>
+        // === Custom Cursor Logic ===
+        const cursorDot = document.querySelector("[data-cursor-dot]");
+        const cursorOutline = document.querySelector("[data-cursor-outline]");
+        const hoverTargets = document.querySelectorAll('.hover-target, a, button, input, textarea, select');
+
+        window.addEventListener("mousemove", function (e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            // Instant dot follow
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Smooth outline follow (paint trail effect)
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // Add hover effect states to interactive elements
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => cursorOutline.classList.add('cursor-hover'));
+            target.addEventListener('mouseleave', () => cursorOutline.classList.remove('cursor-hover'));
+        });
+
+        // === Scroll Reveal Animations ===
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealCallback = (entries, observer) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        };
+
+        const revealOptions = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+        const revealObserver = new IntersectionObserver(revealCallback, revealOptions);
+        
+        revealElements.forEach(el => revealObserver.observe(el));
+    </script>
+</body>
+</html>
